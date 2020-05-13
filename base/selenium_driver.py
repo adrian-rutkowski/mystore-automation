@@ -90,8 +90,11 @@ class SeleniumDriver():
 		self.driver.switch_to.default_content()
 
 	def hover_over(self, cat, subcat):
-		category = self.get_element(cat)
-		subcategory = self.get_element(subcat)
-		actions = ActionChains(self.driver)
-		actions.move_to_element(category).perform()
-		actions.move_to_element(subcategory).click().perform()
+		try:
+			category = self.get_element(cat)
+			subcategory = self.get_element(subcat)
+			actions = ActionChains(self.driver)
+			actions.move_to_element(category).perform()
+			actions.move_to_element(subcategory).click().perform()
+		except:
+			print("Cannot hover over an element.")
