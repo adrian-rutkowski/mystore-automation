@@ -12,6 +12,6 @@ There are 4 sample login tests as of now.
 
 Limitations:
 - Currently the framework only supports XPATH locators
-- There is no logging functionality yet
+- There is no reporting functionality yet
 - Utilities like taking a screenshot on failure are planned for the future 
-- Testing framework in use is Python's built-in unittest but pycharm is also in consideration
+- Test runner in use is Python's built-in unittest but pycharm is also in consideration
