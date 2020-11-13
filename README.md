@@ -8,7 +8,7 @@ Page Object Pattern currently supports the following pages:
 
 Selenium API calls are wrapped in selenium_driver.py
 
-There are 4 sample login tests as of now.
+There are 5 sample login tests as of now.
 
 Limitations:
 - Currently the framework only supports XPATH locators
