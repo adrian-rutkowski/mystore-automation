@@ -24,6 +24,12 @@ class LoginTests(unittest.TestCase):
 		result = lp.verify_login_failed()
 		self.assertTrue(result)
 
+	def test_login_invalid_wrong_email(self):
+		lp = LoginPage(driver)
+		lp.login("dummemail@gmail.com", "abcdefgh")
+		result = lp.verify_login_failed()
+		self.assertTrue(result)
+
 	def test_login_invalid_blank_email(self):
 		lp = LoginPage(driver)
 		lp.login(password="L3arn!ng")
