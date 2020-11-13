@@ -14,4 +14,4 @@ Limitations:
 - Currently the framework only supports XPATH locators
 - There is no reporting functionality yet
 - Utilities like taking a screenshot on failure are planned for the future 
-- Test runner in use is Python's built-in unittest but pycharm is also in consideration
+- Test runner in use is Python's built-in unittest but it's going to be replaced by pytest in the future

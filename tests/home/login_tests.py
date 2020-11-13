@@ -18,19 +18,19 @@ class LoginTests(unittest.TestCase):
 		result = lp.verify_login_successful()
 		self.assertTrue(result)
 
-	def test_login_invalid(self):
+	def test_login_invalid_wrong_password(self):
 		lp = LoginPage(driver)
 		lp.login("adrianthetranslator@gmail.com", "abcdefgh")
 		result = lp.verify_login_failed()
 		self.assertTrue(result)
 
-	def test_login_invalid_2(self):
+	def test_login_invalid_blank_email(self):
 		lp = LoginPage(driver)
-		lp.login(password="abcdefgh")
+		lp.login(password="L3arn!ng")
 		result = lp.verify_login_failed()
 		self.assertTrue(result)
 
-	def test_login_invalid_3(self):
+	def test_login_invalid_blank_password(self):
 		lp = LoginPage(driver)
 		lp.login(email="adrianthetranslator@gmail.com")
 		result = lp.verify_login_failed()
