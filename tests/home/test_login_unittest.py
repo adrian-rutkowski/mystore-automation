@@ -3,7 +3,7 @@ import unittest
 from pages.login_page import LoginPage
 
 
-class LoginTests(unittest.TestCase):
+class TestLogin(unittest.TestCase):
 
 	def setUp(self):
 		global driver
@@ -15,7 +15,7 @@ class LoginTests(unittest.TestCase):
 	def test_login_valid(self):
 		lp = LoginPage(driver)
 		lp.login("adrianthetranslator@gmail.com", "L3arn!ng")
-		result = lp.verify_login_successful()
+		result =lp.verify_login_successful()
 		self.assertTrue(result)
 
 	def test_login_invalid_wrong_password(self):

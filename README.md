@@ -8,10 +8,11 @@ Page Object Pattern currently supports the following pages:
 
 Selenium API calls are wrapped in selenium_driver.py
 
-There are 5 sample login tests as of now.
+Pytest is the main test runner now. 
+
+There are currently 5 sample login tests.
 
 Limitations:
 - Currently the framework only supports XPATH locators
 - There is no reporting functionality yet
 - Utilities like taking a screenshot on failure are planned for the future 
-- Test runner in use is Python's built-in unittest but it's going to be replaced by pytest in the future
