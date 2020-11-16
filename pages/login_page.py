@@ -1,4 +1,5 @@
 from base.basepage import BasePage
+import unittest
 
 
 class LoginPage(BasePage):
