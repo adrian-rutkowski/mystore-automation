@@ -12,7 +12,7 @@ def setUp(request):
 	base_url = "http://automationpractice.com/index.php"
 	if browser == "firefox":
 		driver = webdriver.Firefox()
-	else:
+	elif browser == "chrome":
 		driver = webdriver.Chrome()
 
 	driver.maximize_window()
