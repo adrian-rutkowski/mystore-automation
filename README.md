@@ -8,7 +8,7 @@ Page Object Pattern currently supports the following pages:
 
 Selenium API calls are wrapped in selenium_driver.py
 
-Pytest is the main test runner now. 
+Pytest is the main test runner now. Tests can be run on both Chrome or Firefox when specifying "browser" argument.
 
 There are currently 5 sample login tests.
 
