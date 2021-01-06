@@ -18,19 +18,37 @@ There are also two other local directories which I do not publish on github:
 
 ![POM](https://i.imgur.com/U2eWdpD.jpg "POM")
 
+
 - Default test runner is pytest
 
 ![Pytest](https://i.imgur.com/KaxBPBo.jpg "Pytest")
+
+
 - Selenium methods are wrapped in a reusable way
-![Selenium](https://imgur.com/J3KrVVm "Selenium")
+
+![Selenium](https://i.imgur.com/J3KrVVm.jpg "Selenium")
+
+
 - Log files take today's date in the file name
-![Log](https://imgur.com/WzeOEcX "Log")
+
+![Log](https://i.imgur.com/WzeOEcX.jpg "Log")
+
+
 - Content of the log file shows detailed info about what is going on in the test according to the debug level
-![Content](https://imgur.com/fhMMUJw "Content")
+
+![Content](https://i.imgur.com/fhMMUJw.jpeg "Content")
+
+
 - [Allure](https://docs.qameta.io/allure/) reports can be generated
-![Report](https://imgur.com/z3XfWv8 "Report")
+
+![Report](https://i.imgur.com/z3XfWv8.jpeg "Report")
+
+
 - Screenshots are taken automatically if the test fails
-![Screen](https://imgur.com/mvcMtnF "Screen")
+
+![Screen](https://i.imgur.com/mvcMtnF.jpeg "Screen")
+
+
 
 ## What is planned?
 - Support for multiple locator types
