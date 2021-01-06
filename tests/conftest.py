@@ -6,8 +6,8 @@ def pytest_addoption(parser):
 		"--browser", action="store", default="firefox")
 
 
-@pytest.yield_fixture()
-def setUp(request):
+@pytest.fixture()
+def setup(request):
 	browser = request.config.getoption("--browser")
 	base_url = "http://automationpractice.com/index.php"
 	if browser == "firefox":
