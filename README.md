@@ -17,7 +17,7 @@ There are also two other local directories which I do not publish on github:
 - The framework is based on page object model
 ![POM](https://imgur.com/U2eWdpD "POM")
 - Default test runner is pytest
-![Pytest](https://imgur.com/KaxBPBo "Pytest")
+![Pytest](https://i.imgur.com/KaxBPBo.jpg "Pytest")
 - Selenium methods are wrapped in a reusable way
 ![Selenium](https://imgur.com/J3KrVVm "Selenium")
 - Log files take today's date in the file name
