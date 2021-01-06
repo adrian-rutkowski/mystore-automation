@@ -1,8 +1,11 @@
 from base.basepage import BasePage
-import unittest
+import utilities.log as log
+import logging
 
 
 class LoginPage(BasePage):
+
+	log = log.log_util(logging.DEBUG)
 
 	def __init__(self, driver):
 		super().__init__(driver)
@@ -17,15 +20,19 @@ class LoginPage(BasePage):
 	_error_box = "//p[contains(text(),'There is 1 error')]"
 
 	def click_sign_in_link(self):
+		self.log.info("Click on sign in button.")
 		self.element_click(self._sign_in_link)
 
 	def enter_email(self, email):
+		self.log.info("Enter e-mail address.")
 		self.send_keys(email, self._email_field)
 
 	def enter_password(self, password):
+		self.log.info("Enter password.")
 		self.send_keys(password, self._password_field)
 
 	def click_sign_in_btn(self):
+		self.log.info("Sign in.")
 		self.element_click(self._sign_in_btn)
 
 	def login(self, email="", password=""):
@@ -35,9 +42,11 @@ class LoginPage(BasePage):
 		self.click_sign_in_btn()
 
 	def verify_login_successful(self):
+		self.log.info("Verify successful login.")
 		result = self.is_element_present(self._username_link)
 		return result
 
 	def verify_login_failed(self):
+		self.log.info("Verify failed login.")
 		result = self.is_element_present(self._error_box)
 		return result
