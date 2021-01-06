@@ -1,2 +1,3 @@
-/tests/home/temp.py
 /tests/home/geckodriver.log
+/logs/
+/.pytest_cache/

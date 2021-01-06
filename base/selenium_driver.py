@@ -3,9 +3,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import *
 from selenium.webdriver import ActionChains
+import utilities.log as log
+import logging
 
 
 class SeleniumDriver():
+
+	log = log.log_util(logging.DEBUG)
 
 	def __init__(self, driver):
 		self.driver = driver
@@ -17,18 +21,18 @@ class SeleniumDriver():
 		element = None
 		try:
 			element = self.driver.find_element(By.XPATH, locator)
-			print("Element found with locator: " + locator)
+			self.log.debug("Element found with locator: " + locator)
 		except:
-			print("Element not found. Locator: " + locator)
+			self.log.critical("Element not found. Locator: " + locator)
 		return element
 
 	def element_click(self, locator):
 		try:
 			element = self.get_element(locator)
 			element.click()
-			print("Clicked on element.")
+			self.log.debug("Clicked on element.")
 		except:
-			print("Cannot click on the element. Locator: " + locator)
+			self.log.critical("Cannot click on the element. Locator: " + locator)
 
 	def send_keys(self, data, locator):
 		try:
@@ -36,32 +40,32 @@ class SeleniumDriver():
 			element.click()
 			element.clear()
 			element.send_keys(data)
-			print("Sent data on element.")
+			self.log.debug("Sent data on element.")
 		except:
-			print("Cannot send data on the element. Locator: " + locator)
+			self.log.critical("Cannot send data on the element. Locator: " + locator)
 
 	def clear_field(self, locator):
 		element = self.get_element(locator)
 		element.clear()
-		print("Field clear.")
+		self.log.debug("Field clear.")
 
 	def is_element_present(self, locator):
 		element = self.get_element(locator)
 		if element is not None:
-			print("Element present.")
+			self.log.debug("Element present.")
 			return True
 		else:
-			print("Element not present.")
+			self.log.debug("Element not present.")
 			return False
 
 	def is_element_displayed(self, locator):
 		element = self.get_element(locator)
 		if element is not None:
 			is_displayed = element.is_displayed()
-			print("Element is displayed")
+			self.log.debug("Element is displayed")
 			return is_displayed
 		else:
-			print("Element not displayed")
+			self.log.debug("Element not displayed")
 			return False
 
 	def wait_for_element(self, locator, timeout=10, poll_frequency=0.5):
@@ -73,9 +77,9 @@ class SeleniumDriver():
 													 ElementNotVisibleException,
 													 ElementNotSelectableException])
 			element = wait.until(EC.element_to_be_clickable((locator)))
-			print("Element appeared on the web page")
+			self.log.debug("Element appeared on the web page")
 		except:
-			print("Element not appeared on the web page")
+			self.log.debug("Element not appeared on the web page")
 		return element
 
 	def switch_to_iframe(self, id="", name="", index=None):
@@ -97,4 +101,4 @@ class SeleniumDriver():
 			actions.move_to_element(category).perform()
 			actions.move_to_element(subcategory).click().perform()
 		except:
-			print("Cannot hover over an element.")
+			self.log.debug("Cannot hover over an element.")
