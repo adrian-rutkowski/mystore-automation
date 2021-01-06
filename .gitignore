@@ -1,3 +1,5 @@
 /tests/home/geckodriver.log
 /logs/
 /.pytest_cache/
+/reports/
+/geckodriver.log
