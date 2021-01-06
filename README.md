@@ -15,7 +15,7 @@ There are also two other local directories which I do not publish on github:
 
 ## What does it offer?
 - The framework is based on page object model
-![POM](https://imgur.com/U2eWdpD "POM")
+![Imgur](https://imgur.com/U2eWdpD "POM")
 - Default test runner is pytest
 ![Pytest](https://imgur.com/KaxBPBo "Pytest")
 - Selenium methods are wrapped in a reusable way
