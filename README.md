@@ -14,6 +14,8 @@ There are also two other local directories which I do not publish on github:
 - reports - contains report files that are used for allure reporting
 
 ## What does it offer?
+- Framework supports all the available locator types: id, name, xpath, css selector, class name and link text.
+
 - The framework is based on page object model
 
 ![POM](https://i.imgur.com/U2eWdpD.jpg "POM")
@@ -51,7 +53,6 @@ There are also two other local directories which I do not publish on github:
 
 
 ## What is planned?
-- Support for multiple locator types
 - Further improvement of selenium wrappers
 - Data driven tests
 - More tests
