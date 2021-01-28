@@ -17,40 +17,60 @@ class SeleniumDriver():
 	def get_title(self):
 		return self.driver.title
 
-	def get_element(self, locator):
+	def get_by_type(self, locator_type):
+		locator_type = locator_type.lower()
+		if locator_type == "id":
+			return By.ID
+		elif locator_type == "name":
+			return By.NAME
+		elif locator_type == "xpath":
+			return By.XPATH
+		elif locator_type == "css":
+			return By.CSS_SELECTOR
+		elif locator_type == "class":
+			return By.CLASS_NAME
+		elif locator_type == "link":
+			return By.LINK_TEXT
+		else:
+			self.log.critical("Locator type [" + locator_type + "] not supported.")
+		return False
+
+	def get_element(self, locator, locator_type="xpath"):
 		element = None
 		try:
-			element = self.driver.find_element(By.XPATH, locator)
-			self.log.debug("Element found with locator: " + locator)
+			locator_type = locator_type.lower()
+			by_type = self.get_by_type(locator_type)
+			element = self.driver.find_element(by_type, locator)
+			self.log.debug("Element found with locator: " + "[" + locator_type + "] " + locator)
 		except:
-			self.log.critical("Element not found. Locator: " + locator)
+			self.log.critical("Element not found. Locator: " + "[" + locator_type + "] " + locator)
 		return element
 
-	def element_click(self, locator):
+	def element_click(self, locator, locator_type="xpath"):
 		try:
-			element = self.get_element(locator)
+			element = self.get_element(locator, locator_type)
 			element.click()
 			self.log.debug("Clicked on element.")
 		except:
-			self.log.critical("Cannot click on the element. Locator: " + locator)
+			self.log.critical("Cannot click on the element. Locator: " + "[" + locator_type + "] " + locator)
 
-	def send_keys(self, data, locator):
+	def send_keys(self, data, locator, locator_type="xpath"):
 		try:
-			element = self.get_element(locator)
+			element = self.get_element(locator, locator_type)
 			element.click()
 			element.clear()
 			element.send_keys(data)
 			self.log.debug("Sent data on element.")
 		except:
-			self.log.critical("Cannot send data on the element. Locator: " + locator)
+			self.log.critical("Cannot send data on the element. Locator: " + "[" + locator_type + "] " + locator)
 
-	def clear_field(self, locator):
-		element = self.get_element(locator)
+	def clear_field(self, locator, locator_type="xpath"):
+		element = self.get_element(locator, locator_type)
 		element.clear()
 		self.log.debug("Field clear.")
 
-	def is_element_present(self, locator):
-		element = self.get_element(locator)
+	def is_element_present(self, locator, locator_type="xpath"):
+		element = self.get_element(locator, locator_type)
 		if element is not None:
 			self.log.debug("Element present.")
 			return True
@@ -58,8 +78,8 @@ class SeleniumDriver():
 			self.log.debug("Element not present.")
 			return False
 
-	def is_element_displayed(self, locator):
-		element = self.get_element(locator)
+	def is_element_displayed(self, locator, locator_type="xpath"):
+		element = self.get_element(locator, locator_type)
 		if element is not None:
 			is_displayed = element.is_displayed()
 			self.log.debug("Element is displayed")
@@ -68,15 +88,16 @@ class SeleniumDriver():
 			self.log.debug("Element not displayed")
 			return False
 
-	def wait_for_element(self, locator, timeout=10, poll_frequency=0.5):
+	def wait_for_element(self, locator, locator_type="xpath", timeout=10, poll_frequency=0.5):
 		element = None
 		try:
+			by_type = self.get_by_type(locator_type)
 			print("Waiting for maximum " + str(timeout) + " seconds for element to be clickable")
 			wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll_frequency,
 								 ignored_exceptions=[NoSuchElementException,
 													 ElementNotVisibleException,
 													 ElementNotSelectableException])
-			element = wait.until(EC.element_to_be_clickable((locator)))
+			element = wait.until(EC.element_to_be_clickable((by_type, locator)))
 			self.log.debug("Element appeared on the web page")
 		except:
 			self.log.debug("Element not appeared on the web page")
