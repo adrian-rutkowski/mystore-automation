@@ -5,9 +5,10 @@ from selenium.common.exceptions import *
 from selenium.webdriver import ActionChains
 import utilities.log as log
 import logging
+from selenium.webdriver.support.select import Select
 
 
-class SeleniumDriver():
+class SeleniumDriver:
 
 	log = log.log_util(logging.DEBUG)
 
@@ -16,6 +17,9 @@ class SeleniumDriver():
 
 	def get_title(self):
 		return self.driver.title
+
+	def get_url(self):
+		return self.driver.current_url
 
 	def get_by_type(self, locator_type):
 		locator_type = locator_type.lower()
@@ -69,10 +73,93 @@ class SeleniumDriver():
 		element.clear()
 		self.log.debug("Field clear.")
 
+	def hover_over_and_click(self, parent_locator, child_locator, locator_type="xpath"):
+		try:
+			parent = self.get_element(parent_locator, locator_type)
+			actions = ActionChains(self.driver)
+			actions.move_to_element(parent).perform()
+			self.log.debug("Hovered over the parent element.")
+			child = self.get_element(child_locator, locator_type)
+			actions.move_to_element(child).click().perform()
+			self.log.debug("Clicked on child element.")
+		except:
+			self.log.critical("Mouse hover failed.")
+
+	def drag_and_drop(self, source_locator, target_locator, locator_type="xpath"):
+		try:
+			source = self.get_element(source_locator, locator_type)
+			target = self.get_element(target_locator, locator_type)
+			actions = ActionChains(self.driver)
+			actions.drag_and_drop(source, target).perform()
+			self.log.debug("Drag and drop successful.")
+		except:
+			self.log.critical("Drag and drop failed.")
+
+	def dropdown_value_select_by_text(self, locator, text, locator_type="xpath"):
+		try:
+			dropdown = self.get_element(locator, locator_type)
+			self.log.debug("Dropdown found.")
+			sel = Select(dropdown)
+			sel.select_by_visible_text(text)
+			self.log.debug("Dropdown value selected by visible text: " + text)
+		except:
+			self.log.critical("Cannot find the dropdown.")
+
+	def dropdown_value_select_by_value(self, locator, value, locator_type="xpath"):
+		try:
+			dropdown = self.get_element(locator, locator_type)
+			self.log.debug("Dropdown found.")
+			sel = Select(dropdown)
+			sel.select_by_value(value)
+			self.log.debug("Dropdown value selected by value: " + value)
+		except:
+			self.log.critical("Cannot find the dropdown.")
+
+	def dropdown_value_select_by_index(self, locator, index, locator_type="xpath"):
+		try:
+			dropdown = self.get_element(locator, locator_type)
+			self.log.debug("Dropdown found.")
+			sel = Select(dropdown)
+			sel.select_by_index(index)
+			self.log.debug("Dropdown value selected by index: " + index)
+		except:
+			self.log.critical("Cannot find the dropdown.")
+
+	def switch_to_iframe(self, id="", name="", index=None):
+		try:
+			if id:
+				self.driver.switch_to.frame(id)
+				self.log.debug("Entering the iframe using ID: " + id)
+			elif name:
+				self.driver.switch_to.frame(name)
+				self.log.debug("Entering the iframe using NAME: " + name)
+			else:
+				self.driver.switch_to.frame(index)
+				self.log.debug("Entering the iframe using INDEX: " + str(index))
+		except:
+			self.log.critical("Cannot enter the iframe.")
+
+	def switch_to_default_content(self):
+		try:
+			self.driver.switch_to.default_content()
+			self.log.debug("Switching back to default content.")
+		except:
+			self.log.critical("Cannot switch back to default content.")
+
+	def accept_js_alert(self):
+		alert = self.driver.switch_to.alert
+		alert.accept()
+		self.log.debug("JavaScript alert accepted.")
+
+	def dismiss_js_alert(self):
+		alert = self.driver.switch_to.alert
+		alert.dismiss()
+		self.log.debug("JavaScript alert dismissed.")
+
 	def is_element_present(self, locator, locator_type="xpath"):
 		element = self.get_element(locator, locator_type)
 		if element is not None:
-			self.log.debug("Element present.")
+			self.log.debug("Element is present.")
 			return True
 		else:
 			self.log.debug("Element not present.")
@@ -82,10 +169,20 @@ class SeleniumDriver():
 		element = self.get_element(locator, locator_type)
 		if element is not None:
 			is_displayed = element.is_displayed()
-			self.log.debug("Element is displayed")
+			self.log.debug("Element is displayed.")
 			return is_displayed
 		else:
-			self.log.debug("Element not displayed")
+			self.log.debug("Element not displayed.")
+			return False
+
+	def is_element_clickable(self, locator, locator_type="xpath"):
+		element = self.get_element(locator, locator_type)
+		if element is not None:
+			is_clickable = element.is_clickable()
+			self.log.debug("Element is clickable.")
+			return is_clickable
+		else:
+			self.log.debug("Element not clickable.")
 			return False
 
 	def wait_for_element(self, locator, locator_type="xpath", timeout=10, poll_frequency=0.5):
@@ -98,28 +195,7 @@ class SeleniumDriver():
 													 ElementNotVisibleException,
 													 ElementNotSelectableException])
 			element = wait.until(EC.element_to_be_clickable((by_type, locator)))
-			self.log.debug("Element appeared on the web page")
+			self.log.debug("Element appeared on the web page.")
 		except:
-			self.log.debug("Element not appeared on the web page")
+			self.log.debug("Element not appeared on the web page.")
 		return element
-
-	def switch_to_iframe(self, id="", name="", index=None):
-		if id:
-			self.driver.switch_to.frame(id)
-		elif name:
-			self.driver.switch_to.frame(name)
-		else:
-			self.driver.switch_to.frame(index)
-
-	def switch_to_default_content(self):
-		self.driver.switch_to.default_content()
-
-	def hover_over(self, cat, subcat):
-		try:
-			category = self.get_element(cat)
-			subcategory = self.get_element(subcat)
-			actions = ActionChains(self.driver)
-			actions.move_to_element(category).perform()
-			actions.move_to_element(subcategory).click().perform()
-		except:
-			self.log.debug("Cannot hover over an element.")

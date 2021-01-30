@@ -13,7 +13,7 @@ class TestLogin:
 	@allure.description("Test is meant to log the user in with valid credentials.")
 	@allure.severity(severity_level="CRITICAL")
 	def test_login_valid(self):
-		self.lp.login("aadrianthetranslator@gmail.com", "L3arn!ng")
+		self.lp.login("adrianthetranslator@gmail.com", "L3arn!ng")
 		self.result = self.lp.verify_login_successful()
 		assert self.result
 
