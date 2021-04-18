@@ -3,13 +3,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import *
 from selenium.webdriver import ActionChains
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.common.keys import Keys
 import utilities.log as log
 import logging
-from selenium.webdriver.support.select import Select
 
 
 class SeleniumDriver:
-
 	log = log.log_util(logging.DEBUG)
 
 	def __init__(self, driver):
@@ -20,6 +20,9 @@ class SeleniumDriver:
 
 	def get_url(self):
 		return self.driver.current_url
+
+	def refresh_browser(self):
+		self.driver.refresh()
 
 	def get_by_type(self, locator_type):
 		locator_type = locator_type.lower()
@@ -39,16 +42,34 @@ class SeleniumDriver:
 			self.log.critical("Locator type [" + locator_type + "] not supported.")
 		return False
 
-	def get_element(self, locator, locator_type="xpath"):
+	def get_element(self, locator, locator_type="xpath", timeout=10, poll_frequency=0.5):
 		element = None
 		try:
-			locator_type = locator_type.lower()
 			by_type = self.get_by_type(locator_type)
-			element = self.driver.find_element(by_type, locator)
+			wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll_frequency, ignored_exceptions=[NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException])
+			element = wait.until(EC.visibility_of_element_located((by_type, locator)))
 			self.log.debug("Element found with locator: " + "[" + locator_type + "] " + locator)
-		except:
+		except TimeoutException:
 			self.log.critical("Element not found. Locator: " + "[" + locator_type + "] " + locator)
 		return element
+
+	def get_attribute_value(self, attribute, locator, locator_type="xpath"):
+		try:
+			element = self.get_element(locator, locator_type)
+			attribute_value = element.get_attribute(attribute)
+			self.log.debug("\"" + attribute + "\" attribute's value is: " + attribute_value)
+			return attribute_value
+		except:
+			print("Cannot return attribute's value.")
+
+	def get_element_text(self, locator, locator_type="xpath"):
+		try:
+			element = self.get_element(locator, locator_type)
+			text = element.text
+			self.log.debug("Element's text is: " + text)
+			return text
+		except:
+			print("Cannot return the element's text.")
 
 	def element_click(self, locator, locator_type="xpath"):
 		try:
@@ -72,6 +93,21 @@ class SeleniumDriver:
 		element = self.get_element(locator, locator_type)
 		element.clear()
 		self.log.debug("Field clear.")
+
+	def press_enter(self, locator, locator_type="xpath"):
+		try:
+			element = self.get_element(locator, locator_type)
+			element.send_keys(Keys.ENTER)
+			self.log.debug("Pressed ENTER.")
+		except:
+			self.log.critical("Cannot press ENTER on the element. Locator: " + "[" + locator_type + "] " + locator)
+
+	def press_ctrl_and_key(self, key):
+		try:
+			ActionChains(self.driver).key_down(Keys.CONTROL).send_keys(key).key_up(Keys.CONTROL).perform()
+			self.log.debug("Pressed CTRL+" + key + ".")
+		except:
+			self.log.critical("Cannot press CTRL+" + key + ".")
 
 	def hover_over_and_click(self, parent_locator, child_locator, locator_type="xpath"):
 		try:
@@ -184,18 +220,3 @@ class SeleniumDriver:
 		else:
 			self.log.debug("Element not clickable.")
 			return False
-
-	def wait_for_element(self, locator, locator_type="xpath", timeout=10, poll_frequency=0.5):
-		element = None
-		try:
-			by_type = self.get_by_type(locator_type)
-			print("Waiting for maximum " + str(timeout) + " seconds for element to be clickable")
-			wait = WebDriverWait(self.driver, timeout=timeout, poll_frequency=poll_frequency,
-								 ignored_exceptions=[NoSuchElementException,
-													 ElementNotVisibleException,
-													 ElementNotSelectableException])
-			element = wait.until(EC.element_to_be_clickable((by_type, locator)))
-			self.log.debug("Element appeared on the web page.")
-		except:
-			self.log.debug("Element not appeared on the web page.")
-		return element
