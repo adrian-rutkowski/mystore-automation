@@ -10,7 +10,7 @@ def log_util(logLevel=logging.DEBUG):
 	# By default, log all messages
 	logger.setLevel(logging.DEBUG)
 
-	fh = logging.FileHandler('C:\\Users\\adrian.rutkowski\\PycharmProjects\\mystore-automation\\logs\\automation {:%d-%m-%Y}.log'.format(datetime.now()), mode='a')
+	fh = logging.FileHandler('C:\\Users\\adrian.rutkowski\\Projects\\PycharmProjects\\mystore-automation\\logs\\automation {:%d-%m-%Y}.log'.format(datetime.now()), mode='a')
 	fh.setLevel(logLevel)
 	formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s: %(message)s',
 								  datefmt='%d-%m-%Y %H:%M:%S')
